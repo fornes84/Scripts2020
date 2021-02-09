@@ -9,6 +9,7 @@ if [ $# -ne 2 ]
 then
   echo "Error numero arguments error"
   echo "Usage $0: arg1 arg2"
+fi  
 exit 1	
 
 # XIXA
