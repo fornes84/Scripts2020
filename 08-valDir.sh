@@ -20,6 +20,16 @@ fi
 
 dir=$1
 
+#VALIDAR SI HELP
+
+if [ $1 = "-h" ]
+then
+  echo "Help del prgrama"
+  echo "edt"
+  exit 0
+
+
+
 if ! [ -d $dir ]  # en aquest cas el ! es podria posar dins valida si l'argument es directori
 then
   echo "Error: $dir no es un directori"
