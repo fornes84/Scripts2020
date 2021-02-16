@@ -2,14 +2,11 @@
 # @edt ASIX M01-ISO
 # Febrer 2021
 # Identificar quin tipus d'arxiu es un arxiu donat
-#   -validar Earg, Validar E element, dir tipus element entre dir_regular_link_
+#   -validar Earg, Validar si directori, llistar
 #   $ prog direct
 # -----------------------
-
 ERR_NARGS=1
 ERR_NARX=2
-
-# EL PROGRAMA CONTÉ 3 MODULS
 
 # 1) Validem arguments
 
@@ -32,20 +29,24 @@ fi
 
 fitx=$1
 
-if [ -L $fitx ] # important l'ordre ja que un link/dir es tmb un arxiu
+if [ -L $fitx ] # important l'ordre ja que un link es tmb un tipus de dir
 then
   echo "Es un link"
+  exit 0
 
 elif [ -d $fitx ]
 then
   echo "Es un directori"
+  exit 0
 
 elif [ -f $fitx ]
 then
   echo "Es un regular file"
+  exit 0
   
 else
   echo "$1 no és ni link, ni dir, ni regular file, és un altre tipus de fitxer" 
+  exit 0
 fi
 
 exit 0  # si anem movem el exit podem anar provant bloc per bloc
