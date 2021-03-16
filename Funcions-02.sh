@@ -18,18 +18,16 @@ fi
 usuari=$1
 
 egrep "^$usuari:" /etc/passwd
-if $? -ne 0
+
+if $? -eq 0
 then
   echo "Error, usuari $usuari no existeix"
   return 2
-else
-   egrep "^$usuari:*" | cut -d: -f2
+else	
+user=''
+for camp in {1,3,4,5,6,7}
+  user=$user $(egrep "^$usuari:*" | cut -d: -f$camp /etc/passwd)
+  echo $user
 
-fi
-
-  
-
-
-
-
+fi  
 }
