@@ -160,7 +160,7 @@ function showUser_Group(){
 
 }
 
-showUser_Group marc
+#showUser_Group marc
 
 #5
 
@@ -170,43 +170,111 @@ function showUserList(){
   then
     echo "Error, nº arguments erronis"
     echo "Usage"
-    return 1
+    exit 1
   fi
   
   OK=0
 
   for login in $*
   do
-     usuari=$login
-     fila=$(egrep "^$usuari:" /etc/passwd)
-
+     fila=$(egrep "^$login:" /etc/passwd)
      if [ $? -ne 0 ]
      then
        echo "Error, usuari $usuari no existeix" >> /tmp/stderr
        OK=2
        #return 2
-     fi
-     
+     else
+
      uid=$(echo $fila | cut -d: -f3)
      gid=$(echo $fila | cut -d: -f4)
      home=$(echo $fila | cut -d: -f6)
      shell=$(echo $fila | cut -d: -f7)
      gname=$(egrep "^[^:]*:[^:]*:$gid:" /etc/group | cut -d: -f1)
     
+     echo "nom:$login"
+     echo "uid:$uid"
+     echo "gid:$gid"
+     echo "gname:$gname"
+     echo "home:$home"
+     echo "shell:$shell"
+     fi   
+  done
+
+  return $OK
+  
+}
+
+#showUserList marc pere anna isx43457008
+
+# 6
+
+function showUserIn(){
+
+while read -r login
+do
+     linea=$(egrep "^$login:" /etc/passwd)
+     if [ $? -ne 0 ]
+     then
+       echo "Error, usuari $usuari no existeix" >> /tmp/stderr
+       OK=2
+       #return 2
+     else
+ 
+     uid=$(echo $linea | cut -d: -f3)
+     gid=$(echo $linea | cut -d: -f4)
+     home=$(echo $line | cut -d: -f6)
+     shell=$(echo $linea | cut -d: -f7)
+     gname=$(egrep "^[^:]*:[^:]*:$gid:" /etc/group | cut -d: -f1)
+
      echo "nom:$usuari"
      echo "udi:$uid"
      echo "gid:$gid"
      echo "gname:$gname"
      echo "home:$home"
      echo "shell:$shell"   
-  done
+     fi
 
-  if [ $OK -ne 2 ]
+done  
+
+}
+
+# 7
+# DONAT UN GNAME...
+
+#PISTA:
+
+function shoWGroupMainMembers()
+
+{
+
+  ERR_ARG=1
+  ERR_VAL=2
+
+  if [ $# -ne 1 ]
   then
-    return 0
+    echo "Error nº arguments erroni"
+    echo "usage $0 gname"
+    exit $ERR_ARG
+  fi
+
+  gname=$1
+
+  lineaGRP=$(egrep "^$gname" /etc/group)
+  
+  if [ $? -eq 0 ]
+  then
+    gid=$(echo $lineaGRP | cut -d: -f3) 
+
+    lineaPASS=$(egrep ^[^:]*:[^:]*:[^:]*:$gid: /etc/passwd) 	  
+    login=$(echo $lineaPASS | cut -f1)
+    uid=$(echo $lineaPASS | cut -f3)
+    dir=$(echo $lineaPASS | cut -f6)
+    shell=$(echo $lineaPASS | cut -f7)
 
   else
-    return 2
+    echo "Error, el nom del grup $1 no existeix"
+    exit $ERR_VAL	  
   fi
 }
 
+shoWGroupMainMembers marc
