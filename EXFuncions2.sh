@@ -484,11 +484,32 @@ numStdin carta.txt
 function filterGid(){
 
 
+  ERR_NARG=1
+  ERR_ARG=2
+
+  if [ $# -ne 1 ]
+  then
+    echo "Num fitxers incorrecte, ha de tenir un"
+    echo "Usage: $0 [regularfile]"
+    return $ERR_NARG
+  fi
+  
+  if ! [ -f $1 ]
+  then
+    echo "L'argument $1 no es un regular file"
+    echo "Usage: $0 [regularfile]"
+    return $ERR_ARG
+  fi
 
 
+  ruta=$(pwd)
+  fitxer=$(echo "$ruta/$1")	
+  gid=$(cut -d: -f4 $fitxer)
+  
 
-
-
+  #| sort t: -k4,4 -n
+  
+   return 0
 }
 
-filterGid
+#filterGid

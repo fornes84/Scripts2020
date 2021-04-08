@@ -1,0 +1,27 @@
+#! /bin/bash
+# EXERCICIS Scripts 2019 del 21 al 24
+
+#21 Fer una funció que rep un login..
+
+function getHome(){
+
+  login=$1
+  egrep "^$login:" | cut -d: -f6 /etc/passwd
+  
+  if [ $? -eq 0 ]
+  then
+    return 0
+  else
+    return 1
+  fi    
+}
+
+# 22 Fer una funcio
+
+function getHoleList(){
+
+
+
+
+
+}
