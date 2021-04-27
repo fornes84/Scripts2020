@@ -8,7 +8,7 @@
 
 showuser(){
 
-if $# -ne 1 
+if [ $# -ne 1 ]
 then
   echo "Error, nº arguments erronis"
   echo "Usage"
@@ -16,18 +16,21 @@ then
 fi
 
 usuari=$1
+fields=''
 
-egrep "^$usuari:" /etc/passwd
+egrep "^$usuari:" /etc/passwd > /dev/null 
 
-if $? -eq 0
+if [ $? -ne 0 ]
 then
   echo "Error, usuari $usuari no existeix"
   return 2
-else	
-user=''
-for camp in {1,3,4,5,6,7}
-  user=$user $(egrep "^$usuari:*" | cut -d: -f$camp /etc/passwd)
-  echo $user
-
-fi  
+else
+  login=$(egrep "^$usuari:" /etc/passwd | cut -d: -f1)	
+  for i in 3 4 5 6 7
+  do
+    fields="$fields:$(egrep "^$usuari:" /etc/passwd | cut -d: -f$i)" 
+  done
+  echo "$login$fields"
+  return 0
+fi
 }
