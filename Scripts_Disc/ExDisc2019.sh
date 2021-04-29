@@ -108,9 +108,23 @@ function loginboth(){
 function fstype(){
   
   fstypE=$1
-
   egrep -v "^#|^$" /etc/fstab | tr -s '[[:blank:]]' ' '| egrep "^[^ ]* [^ ]* $fstypE "| cut -d' ' -f1,2
-
-
   return 0 
 }
+
+function allfstype(){
+
+  llista_fstype=$(egrep -v "^#|^$" /etc/fstab | tr -s '[[:blank:]]' ' '| cut -d' ' -f3 | sort -u)
+  
+  for fs in $llista_fstype
+  do
+    echo "$fs :"	  
+    infoFstab=$(fstype $fs | tr ' ' '\t')
+    echo -e "\t $infoFstab" 
+  done
+
+  return 0
+
+}
+
+
